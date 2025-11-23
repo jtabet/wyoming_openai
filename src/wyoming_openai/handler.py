@@ -240,6 +240,7 @@ class OpenAIEventHandler(AsyncEventHandler):
             transcription = await self._stt_client.audio.transcriptions.create(
                 file=self._wav_buffer,
                 model=self._current_asr_model.name,
+                language='f',
                 temperature=self._stt_temperature or NOT_GIVEN,
                 prompt=self._stt_prompt or NOT_GIVEN,
                 response_format="json",
