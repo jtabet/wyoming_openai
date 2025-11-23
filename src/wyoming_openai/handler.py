@@ -233,6 +233,9 @@ class OpenAIEventHandler(AsyncEventHandler):
 
             # Prepare extra_body for SPEACHES backend
             extra_body = {}
+
+            extra_body["lang_code"] = "f"
+
             if hasattr(self._stt_client, 'backend') and self._stt_client.backend == OpenAIBackend.SPEACHES:
                 extra_body["vad_filter"] = False
                 _LOGGER.debug("Adding vad_filter=False for SPEACHES backend")
