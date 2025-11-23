@@ -234,6 +234,7 @@ class OpenAIEventHandler(AsyncEventHandler):
             # Prepare extra_body for SPEACHES backend
             extra_body = {}
 
+            _LOGGER.debug("Adding lang_code='f' for KOKORO_FASTAPI backend")
             extra_body["lang_code"] = "f"
 
             if hasattr(self._stt_client, 'backend') and self._stt_client.backend == OpenAIBackend.SPEACHES:
@@ -1062,6 +1063,11 @@ class OpenAIEventHandler(AsyncEventHandler):
             audio_width = DEFAULT_AUDIO_WIDTH
             audio_channels = DEFAULT_AUDIO_CHANNELS
             timestamp = start_timestamp
+            # Prepare extra_body for SPEACHES backend
+            extra_body = {}
+
+            _LOGGER.debug("(stream) Adding lang_code='f' for KOKORO_FASTAPI backend")
+            extra_body["lang_code"] = "f"
 
             async with self._tts_semaphore:
                 async with self._tts_client.audio.speech.with_streaming_response.create(
@@ -1070,6 +1076,7 @@ class OpenAIEventHandler(AsyncEventHandler):
                     input=text,
                     speed=self._tts_speed or NOT_GIVEN,
                     instructions=self._tts_instructions or NOT_GIVEN
+                    extra_body=extra_body if extra_body else None
                 ) as response:
 
                     async for chunk in response.iter_bytes(chunk_size=TTS_CHUNK_SIZE):
