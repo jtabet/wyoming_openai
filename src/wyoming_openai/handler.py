@@ -1075,7 +1075,7 @@ class OpenAIEventHandler(AsyncEventHandler):
                     voice=voice.name,
                     input=text,
                     speed=self._tts_speed or NOT_GIVEN,
-                    instructions=self._tts_instructions or NOT_GIVEN
+                    instructions=self._tts_instructions or NOT_GIVEN,
                     extra_body=extra_body if extra_body else None
                 ) as response:
 
