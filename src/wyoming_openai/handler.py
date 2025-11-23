@@ -237,10 +237,13 @@ class OpenAIEventHandler(AsyncEventHandler):
                 extra_body["vad_filter"] = False
                 _LOGGER.debug("Adding vad_filter=False for SPEACHES backend")
 
+            if hasattr(self._stt_client, 'backend') and self._stt_client.backend == OpenAIBackend.KOKORO_FASTAPI:
+                extra_body["lang_code"] = "f"
+                _LOGGER.debug("Adding lang_code='f' for KOKORO_FASTAPI backend")
+
             transcription = await self._stt_client.audio.transcriptions.create(
                 file=self._wav_buffer,
                 model=self._current_asr_model.name,
-                language='f',
                 temperature=self._stt_temperature or NOT_GIVEN,
                 prompt=self._stt_prompt or NOT_GIVEN,
                 response_format="json",
